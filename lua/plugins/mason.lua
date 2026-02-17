@@ -13,18 +13,7 @@ return {
 		},
 		config = function()
 			require("mason-nvim-lint").setup({
-				ensure_installed = {
-					"sql-formatter",
-					"sqlfluff",
-					"stylua",
-					"black",
-					"prettier",
-					"codespell",
-					"autoflake",
-					"autopep8",
-					"isort",
-					"mypy",
-				},
+				automatic_installation = true,
 			})
 		end,
 	},
@@ -32,40 +21,46 @@ return {
 		"williamboman/mason-lspconfig.nvim",
 		lazy = false,
 		config = function()
-			require("mason-lspconfig").setup({
-				ensure_installed = {
-					"lua_ls",
-					"tsserver",
-					"tailwindcss",
-					"pyright",
-					"sqlls",
-				},
-			})
-		end,
-	},
+				require("mason-lspconfig").setup({
+					ensure_installed = {
+						"lua_ls",
+						"tsserver",
+						"tailwindcss",
+						"pyright",
+						"sqlls",
+						"terraformls",
+					},
+				})
+			end,
+		},
 	{
 		"neovim/nvim-lspconfig",
 		lazy = false,
 		config = function()
 			local capabilities = vim.lsp.protocol.make_client_capabilities()
 			capabilities = require("cmp_nvim_lsp").default_capabilities(capabilities)
-			local lspconfig = require("lspconfig")
-			lspconfig.pyright.setup({
+
+			vim.lsp.config.pyright = {
 				capabilities = capabilities,
 				filetypes = { "sh", "python" },
-			})
-			lspconfig.lua_ls.setup({
+			}
+			vim.lsp.config.lua_ls = {
 				capabilities = capabilities,
-			})
-			lspconfig.tsserver.setup({
+			}
+			vim.lsp.config.tsserver = {
 				capabilities = capabilities,
-			})
-			lspconfig.tailwindcss.setup({
+			}
+			vim.lsp.config.tailwindcss = {
 				capabilities = capabilities,
-			})
-			lspconfig.sqlls.setup({
+			}
+			vim.lsp.config.sqlls = {
 				capabilities = capabilities,
-			})
+			}
+			vim.lsp.config.terraformls = {
+				capabilities = capabilities,
+			}
+
+			vim.lsp.enable({ "pyright", "lua_ls", "tsserver", "tailwindcss", "sqlls", "terraformls" })
 			-- Global mappings.
 			-- See `:help vim.diagnostic.*` for documentation on any of the below functions
 			vim.keymap.set("n", "<leader>e", vim.diagnostic.open_float)

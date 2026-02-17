@@ -11,7 +11,7 @@ return {
 		config = function()
 			require("dap-vscode-js").setup({
 				-- node_path = "node", -- Path of node executable. Defaults to $NODE_PATH, and then "node"
-				debugger_path = vim.fn.stdpath("data") .."/lazy/vscode-js-debug", -- Path to vscode-js-debug
+				debugger_path = vim.fn.stdpath("data") .. "/lazy/vscode-js-debug", -- Path to vscode-js-debug
 				-- Command to use to launch the debug server. Takes precedence over `node_path` and `debugger_path`.
 				-- debugger_cmd = { "js-debug-adapter" },
 				adapters = { "pwa-node", "pwa-chrome", "pwa-msedge", "node-terminal", "pwa-extensionHost" },
@@ -25,6 +25,7 @@ return {
 		"mfussenegger/nvim-dap",
 		dependencies = {
 			"rcarriga/nvim-dap-ui",
+			"nvim-neotest/nvim-nio",
 		},
 		config = function()
 			require("dapui").setup()
@@ -45,7 +46,7 @@ return {
 				dapui.close()
 			end
 
-			for _, language in ipairs({ "typescript", "javascript" }) do
+			for _, language in ipairs({ "typescript", "typescriptreact", "javascript", "javascriptreact" }) do
 				dap.configurations[language] = {
 					{
 						type = "pwa-node",
@@ -59,10 +60,10 @@ return {
 						type = "pwa-node",
 						request = "attach",
 						name = "Attach",
-            address = "127.0.0.1",
-            port = 9230,
+						address = "127.0.0.1",
+						port = 9230,
 						processId = require("dap.utils").pick_process,
-            skipFiles = { "<node_internals>/**", "node_modules/**" },
+						skipFiles = { "<node_internals>/**", "node_modules/**" },
 						cwd = "${workspaceFolder}",
 						sourceMaps = true,
 					},
@@ -71,7 +72,7 @@ return {
 						type = "node-terminal",
 						request = "launch",
 						command = "npm run dev",
-            cwd = "${workspaceFolder}",
+						cwd = "${workspaceFolder}",
 						sourceMaps = true,
 					},
 					{
